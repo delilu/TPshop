@@ -14,7 +14,8 @@ def init_driver():
     # 解决输入中文
     desired_caps['unicodeKeyboard'] = True
     desired_caps['resetKeyboard'] = True
-
+    # 使用toast框架
+    desired_caps['automationName'] = 'Uiautomator2'
     # 声明我们的driver对象
     driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
     return driver
