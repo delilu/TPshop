@@ -1,3 +1,5 @@
+import allure
+
 from base.base_driver import init_driver
 from page.page import Page
 
@@ -7,6 +9,7 @@ class TestLogin:
         self.driver = init_driver()
         self.page = Page(self.driver)
 
+    @allure.step(title="测试登录")
     def test_login(self):
         self.page.home.click_mine()
         self.page.mine.click_login_sign_up()
