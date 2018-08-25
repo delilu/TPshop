@@ -22,3 +22,6 @@ class LoginPage(BaseAction):
     @allure.step(title="点击登录")
     def click_login(self):
         self.click(self.login_btn)
+
+    def login_btn_is_enabled(self):
+        return self.is_location_enabled(self.login_btn)

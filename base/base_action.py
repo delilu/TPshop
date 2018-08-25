@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -10,6 +11,11 @@ class BaseAction:
         location_by, location_value = location
         wait = WebDriverWait(self.driver, timeout, poll)
         return wait.until(lambda x: x.find_element(location_by, location_value))
+
+    def find_elements(self, location, timeout=10.0, poll=1.0):
+        location_by, location_value = location
+        wait = WebDriverWait(self.driver, timeout, poll)
+        return wait.until(lambda x: x.find_elements(location_by, location_value))
 
     def click(self, location):
         self.find_element(location).click()
@@ -26,9 +32,26 @@ class BaseAction:
         element = self.find_element((By.XPATH, message), timeout, poll=0.1)
         return element.text
 
+    @allure.step(title="判断toast是否存在")
     def is_toast_exist(self, message):
         try:
             self.find_toast(message)
             return True
         except Exception:
+            return False
+
+    @allure.step(title="判断这个元素/按钮是否可用")
+    def is_location_enabled(self, location):
+        return self.find_element(location).get_attribute("enabled") == "true"
+
+    @allure.step(title="判断这个元素/按钮是否可点击")
+    def is_location_clickable(self, location):
+        return self.find_element(location).get_attribute("clickable") == "true"
+
+    @allure.step(title="判断这个元素/按钮在页面是否存在")
+    def is_location_exist(self, location):
+        try:
+            self.find_element(location)
+            return True
+        except:
             return False
