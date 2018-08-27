@@ -70,3 +70,52 @@ class BaseAction:
     @allure.step(title="点击回车按钮")
     def press_enter(self):
         self.press_keycode(66)
+
+    @allure.step("屏幕滑动一次的方法")
+    def scroll_page_one_time(self, direction="up"):
+        """
+        屏幕滑动一次
+        :param direction: 滑动方向
+        up:从下往上滑
+        down：从上往下
+        left:从左往右
+        right：从右往左
+        """
+        screen_size = self.driver.get_window_size()
+        width = screen_size["width"]
+        height = screen_size["height"]
+        center_x = width * 0.5
+        center_y = height * 0.5
+        top_x = center_x
+        top_y = height * 0.25
+        down_x = center_x
+        down_y = height * 0.75
+        left_x = width * 0.25
+        left_y = center_y
+        right_x = width * 0.75
+        right_y = center_y
+        if direction == "up":
+            self.driver.swipe(down_x, down_y, top_x, top_y, 2000)
+        elif direction == "down":
+            self.driver.swipe(top_x, top_y, down_x, down_y, 2000)
+        elif direction == "right":
+            self.driver.swipe(left_x, left_y, right_x, right_y, 2000)
+        elif direction == "left":
+            self.driver.swipe(right_x, right_y, left_x, left_y, 2000)
+        else:
+            raise Exception("请输入正确的参数:up、left、right、down")
+
+    @allure.step("滑动找到元素位置")
+    def is_location_exist_scroll_page(self, location, direction='up'):
+        old_page = None
+        new_page = self.driver.page_source
+        while True:
+            if self.is_location_exist(location):
+                return True
+            else:
+                if not old_page == new_page:
+                    self.scroll_page_one_time(direction)
+                    old_page = new_page
+                    new_page = self.driver.page_source
+                else:
+                    return False
