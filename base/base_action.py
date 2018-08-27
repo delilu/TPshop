@@ -55,3 +55,18 @@ class BaseAction:
             return True
         except:
             return False
+
+    def press_keycode(self, key_code):
+        cap_dict = self.driver.capabilities
+        if cap_dict.get("automationName") == "Uiautomator2":
+            self.driver.press_keycode(key_code)
+        else:
+            self.driver.key_event(key_code)
+
+    @allure.step(title="点击返回按钮")
+    def press_back(self):
+        self.press_keycode(4)
+
+    @allure.step(title="点击回车按钮")
+    def press_enter(self):
+        self.press_keycode(66)
