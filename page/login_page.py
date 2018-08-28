@@ -9,7 +9,7 @@ class LoginPage(BaseAction):
     password_btn = By.ID, "com.tpshop.malls:id/edit_password"
     login_btn = By.ID, "com.tpshop.malls:id/btn_login"
     # 显示密码的小眼睛按钮
-    view_pwd_btn = By.ID,"com.tpshop.malls:id/img_view_pwd"
+    view_pwd_btn = By.ID, "com.tpshop.malls:id/img_view_pwd"
 
     @allure.step(title="输入用户名")
     def input_username(self, text):
@@ -32,3 +32,9 @@ class LoginPage(BaseAction):
     @allure.step(title="点击显示密码按钮")
     def click_view_pwd(self):
         self.click(self.view_pwd_btn)
+
+    @allure.step("输入用户名、密码登录")
+    def login(self):
+        self.input_username("13800138006")
+        self.input_password("123456")
+        self.click_login()
